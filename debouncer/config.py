@@ -1,11 +1,13 @@
-from pathlib import Path
+from functools import lru_cache
 
 from pydantic import BaseSettings, Field
 
 
 class Config(BaseSettings):
     port: int = Field(4000, env="PORT")
-    store_path: Path = Field("./debouncer.db", env="STORE_PATH")
+    store_path: str = Field("debouncer.db", env="STORE_PATH")
 
 
-config = Config()
+@lru_cache()
+def get_config():
+    return Config()

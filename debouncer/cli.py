@@ -1,9 +1,9 @@
 import uvicorn  # type: ignore
 
 from .app import create_app
-from .config import config
+from .config import get_config
 
 
 def run():
-    app = create_app()
-    uvicorn.run(app, port=config.port)
+    app = create_app(get_config())
+    uvicorn.run(app, port=app.config.port)

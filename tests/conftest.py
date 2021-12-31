@@ -1,17 +1,17 @@
-from os import environ
-
 import pytest
 from fastapi.testclient import TestClient
 
 from debouncer.app import create_app
+from debouncer.config import Config
 from debouncer.schema import Call, Endpoint, EndpointCreate
 from debouncer.store import Store
 
 
 @pytest.fixture(name="app")
 def fixture_app(tmp_path):
-    environ["STORE_PATH"] = str(tmp_path / "debouncer.db")
-    yield create_app()
+    test_config = Config()
+    test_config.store_path = str(tmp_path / "test.db")
+    yield create_app(test_config)
 
 
 @pytest.fixture(name="client")

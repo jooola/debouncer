@@ -1,10 +1,10 @@
+from functools import lru_cache
 from os import PathLike
 from typing import List, cast
 from uuid import UUID
 
 from sqlitedict import SqliteDict  # type: ignore
 
-from .config import config
 from .schema import Endpoint
 
 
@@ -32,4 +32,6 @@ class Store:
         del self.store[str(key)]
 
 
-store = Store(config.store_path)
+@lru_cache()
+def get_store(store_path: PathLike):
+    return Store(store_path)

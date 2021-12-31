@@ -18,6 +18,10 @@ def test_create_endpoint(client):
 
 
 def test_list_endpoints(client):
+    response = client.get("/api/")
+    assert response.status_code == 200
+    assert response.json() == []
+
     response = client.post(
         "/api/",
         json={
@@ -27,6 +31,7 @@ def test_list_endpoints(client):
         },
     )
     assert response.status_code == 201
+
     response = client.get("/api/")
     assert response.status_code == 200
     assert response.json() == [
