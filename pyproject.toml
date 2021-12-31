@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "funnel"
+version = "0.0.1"
+description = "Funnel is a proxy that debounce requests."
+authors = ["Joola <jooola@users.noreply.github.com>"]
+readme = "README.md"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+]
+include = ["web/dist/**/*"]
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+loguru = "^0.5.3"
+httpx = "^0.21.1"
+fastapi = "^0.70.1"
+uvicorn = "^0.16.0"
+pydantic = "^1.8.2"
+sqlitedict = "^1.7.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+isort = "^5.9.3"
+mypy = "^0.920"
+pylint = "^2.12.2"
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+pytest-asyncio = "^0.16.0"
+pytest-httpx = "^0.17.3"
+pytest-xdist = "^2.5.0"
+
+[tool.poetry.scripts]
+funnel = 'funnel.cli:run'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.messages_control]
+extension-pkg-whitelist = "pydantic"
+disable = [
+  "missing-module-docstring",
+  "missing-function-docstring",
+  "missing-class-docstring"
+]
