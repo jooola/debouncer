@@ -27,10 +27,10 @@ lint: install
 	poetry run pylint debouncer tests
 	poetry run mypy debouncer
 
-test: install build-web
+test: install
 	poetry run pytest -n $(CPU_CORES) --color=yes -v --cov=debouncer tests
 
-run: install build-web
+run: install
 	poetry run debouncer
 
 ci-publish:
