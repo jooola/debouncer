@@ -9,10 +9,13 @@ install-poetry:
 	curl -sSL https://install.python-poetry.org | python3 -
 
 INSTALL_STAMP := .installed
-install: $(INSTALL_STAMP)
+install: $(INSTALL_STAMP) build-web
 $(INSTALL_STAMP):
 	poetry install
 	touch $(INSTALL_STAMP)
+
+build-web: 
+	make -C web
 
 format: install
 	poetry run black .
