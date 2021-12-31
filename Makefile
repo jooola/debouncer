@@ -28,6 +28,7 @@ lint: install
 	poetry run mypy debouncer
 
 test: install
+	mkdir -p web/dist/assets
 	poetry run pytest -n $(CPU_CORES) --color=yes -v --cov=debouncer tests
 
 run: install
