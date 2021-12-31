@@ -1,13 +1,30 @@
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, Request
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Body,
+    Depends,
+    HTTPException,
+    Query,
+    Request,
+)
 from loguru import logger
 
 from .dispatch import dispatch
 from .schema import Call, CallStatus, Endpoint, EndpointCreate
 
-router = APIRouter(prefix="/api")
+
+async def verify_auth_key(req: Request, auth: Optional[str] = Query(None)):
+    if req.app.config.auth_key is not None and req.app.config.auth_key != auth:
+        raise HTTPException(status_code=400, detail="Invalid auth key")
+
+
+router = APIRouter(
+    prefix="/api",
+    dependencies=[Depends(verify_auth_key)],
+)
 
 
 @router.get("/", response_model=List[Endpoint], tags=["endpoints"])

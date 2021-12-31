@@ -7,16 +7,32 @@ from debouncer.schema import Call, Endpoint, EndpointCreate
 from debouncer.store import Store
 
 
+@pytest.fixture(name="config")
+def fixture_config(tmp_path):
+    config = Config()
+    config.store_path = str(tmp_path / "test.db")
+    return config
+
+
 @pytest.fixture(name="app")
-def fixture_app(tmp_path):
-    test_config = Config()
-    test_config.store_path = str(tmp_path / "test.db")
-    yield create_app(test_config)
+def fixture_app(config):
+    yield create_app(config)
+
+
+@pytest.fixture(name="app_secure")
+def fixture_app_secure(config):
+    config.auth_key = "secret"
+    yield create_app(config)
 
 
 @pytest.fixture(name="client")
 def fixture_client(app):
     yield TestClient(app)
+
+
+@pytest.fixture(name="client_secure")
+def fixture_client_secure(app_secure):
+    yield TestClient(app_secure)
 
 
 @pytest.fixture(name="store")

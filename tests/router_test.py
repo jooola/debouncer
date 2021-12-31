@@ -1,3 +1,13 @@
+def test_auth_key(client_secure):
+    response = client_secure.get("/api/?auth=secret")
+    assert response.status_code == 200
+
+
+def test_auth_key_fail(client_secure):
+    response = client_secure.get("/api/?auth=not-secret")
+    assert response.status_code == 400
+
+
 def test_create_endpoint(client):
     response = client.post(
         "/api/",
