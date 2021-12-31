@@ -24,7 +24,7 @@ format: install
 lint: install
 	poetry run black . --diff --check
 	poetry run isort . --profile black --check
-	poetry run pylint debouncer tests
+	poetry run pylint --jobs=$(CPU_CORES) debouncer tests
 	poetry run mypy debouncer
 
 test: install
