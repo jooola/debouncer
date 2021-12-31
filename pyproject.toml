@@ -36,9 +36,6 @@ pytest-httpx = "^0.17.3"
 pytest-xdist = "^2.5.0"
 requests = "^2.26.0"
 
-[tool.poetry.scripts]
-debouncer = 'debouncer.cli:run'
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

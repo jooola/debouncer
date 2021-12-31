@@ -19,4 +19,4 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY --from=build dist/*.whl .
 RUN pip install *.whl && rm -Rf *.whl
 
-CMD ["debouncer"]
+CMD ["uvicorn", "debouncer:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "4000"]

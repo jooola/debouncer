@@ -32,7 +32,7 @@ test: install
 	poetry run pytest -n $(CPU_CORES) --color=yes -v --cov=debouncer tests
 
 run: install
-	poetry run debouncer
+	poetry run uvicorn debouncer:app --port 4000 --reload
 
 ci-publish:
 	poetry publish --no-interaction --build
