@@ -11,6 +11,7 @@ install-poetry:
 INSTALL_STAMP := .installed
 install: $(INSTALL_STAMP)
 $(INSTALL_STAMP):
+	pre-commit install
 	poetry install
 	touch $(INSTALL_STAMP)
 
