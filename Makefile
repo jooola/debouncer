@@ -9,12 +9,12 @@ install-poetry:
 	curl -sSL https://install.python-poetry.org | python3 -
 
 INSTALL_STAMP := .installed
-install: $(INSTALL_STAMP) build-web
+install: $(INSTALL_STAMP)
 $(INSTALL_STAMP):
 	poetry install
 	touch $(INSTALL_STAMP)
 
-build-web: 
+build-web:
 	make -C web
 
 format: install
@@ -27,10 +27,10 @@ lint: install
 	poetry run pylint debouncer tests
 	poetry run mypy debouncer
 
-test: install
+test: install build-web
 	poetry run pytest -n $(CPU_CORES) --color=yes -v --cov=debouncer tests
 
-run: install
+run: install build-web
 	poetry run debouncer
 
 ci-publish:
