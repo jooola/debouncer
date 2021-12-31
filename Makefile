@@ -39,3 +39,6 @@ ci-publish:
 
 release: lint test
 	bash scripts/release.sh
+
+docker:
+	docker build -t debouncer .
