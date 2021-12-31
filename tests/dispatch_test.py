@@ -2,9 +2,9 @@ from datetime import datetime
 
 import pytest
 
-from funnel.dispatch import dispatch
-from funnel.schema import Endpoint
-from funnel.store import Store
+from debouncer.dispatch import dispatch
+from debouncer.schema import Endpoint
+from debouncer.store import Store
 
 
 @pytest.mark.asyncio

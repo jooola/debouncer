@@ -1,5 +1,5 @@
 version: "3.9"
 
 services:
-  funnel:
-    image: funnel:latest
+  debouncer:
+    image: debouncer:latest

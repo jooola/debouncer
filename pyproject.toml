@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "funnel"
+name = "debouncer"
 version = "0.0.1"
-description = "Funnel is a proxy that debounce requests."
+description = "Debouncer is a proxy that debounce requests."
 authors = ["Joola <jooola@users.noreply.github.com>"]
 readme = "README.md"
 classifiers = [
@@ -36,7 +36,7 @@ pytest-httpx = "^0.17.3"
 pytest-xdist = "^2.5.0"
 
 [tool.poetry.scripts]
-funnel = 'funnel.cli:run'
+debouncer = 'debouncer.cli:run'
 
 [build-system]
 requires = ["poetry-core"]

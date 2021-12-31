@@ -21,14 +21,14 @@ format: install
 lint: install
 	poetry run black . --diff --check
 	poetry run isort . --profile black --check
-	poetry run pylint funnel tests
-	poetry run mypy funnel
+	poetry run pylint debouncer tests
+	poetry run mypy debouncer
 
 test: install
-	poetry run pytest -n $(CPU_CORES) --color=yes -v --cov=funnel tests
+	poetry run pytest -n $(CPU_CORES) --color=yes -v --cov=debouncer tests
 
 run: install
-	poetry run funnel
+	poetry run debouncer
 
 ci-publish:
 	poetry publish --no-interaction --build

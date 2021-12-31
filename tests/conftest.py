@@ -1,12 +1,12 @@
 import pytest
 
-from funnel.schema import Call, Endpoint, EndpointCreate
-from funnel.store import Store
+from debouncer.schema import Call, Endpoint, EndpointCreate
+from debouncer.store import Store
 
 
 @pytest.fixture(autouse=True)
 def store(tmp_path):
-    yield Store(tmp_path / "funnel.db")
+    yield Store(tmp_path / "debouncer.db")
 
 
 @pytest.fixture
