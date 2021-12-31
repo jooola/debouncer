@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "debouncer"
-version = "0.0.5"
+version = "0.0.6"
 description = "Debouncer is a proxy that debounce requests."
 authors = ["Joola <jooola@users.noreply.github.com>"]
 readme = "README.md"
