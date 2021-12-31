@@ -1,4 +1,4 @@
-from datetime import datetime
+from unittest.mock import patch
 
 import pytest
 
@@ -7,28 +7,23 @@ from debouncer.schema import Endpoint
 from debouncer.store import Store
 
 
-@pytest.mark.asyncio
-async def test_dispatch(store: Store, endpoint: Endpoint):
+async def helper_dispatch(store, endpoint, call_count):
     store.save(endpoint.uid, endpoint)
 
-    start = datetime.now()
-    await dispatch(store, endpoint)
-    end = datetime.now()
+    with patch("debouncer.dispatch.client.send") as mock_client:
+        await dispatch(store, endpoint)
+        assert mock_client.call_count == call_count
 
     result = store.get(endpoint.uid)
-    assert (end - start).seconds == pytest.approx(2)
     assert result.call is None
+
+
+@pytest.mark.asyncio
+async def test_dispatch(store: Store, endpoint: Endpoint):
+    await helper_dispatch(store, endpoint, 1)
 
 
 @pytest.mark.asyncio
 async def test_dispatch_with_redispatch(store: Store, endpoint: Endpoint):
     endpoint.call.redispatch = True
-    store.save(endpoint.uid, endpoint)
-
-    start = datetime.now()
-    await dispatch(store, endpoint)
-    end = datetime.now()
-
-    result = store.get(endpoint.uid)
-    assert (end - start).seconds == pytest.approx(4)
-    assert result.call is None
+    await helper_dispatch(store, endpoint, 2)
