@@ -41,4 +41,4 @@ release: lint test
 	bash scripts/release.sh
 
 docker:
-	docker build -t debouncer .
+	docker build -t ghcr.io/jooola/debouncer .
