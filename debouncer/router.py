@@ -1,3 +1,4 @@
+import secrets
 from typing import List, Optional
 from uuid import UUID
 
@@ -10,21 +11,56 @@ from fastapi import (
     Query,
     Request,
 )
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from loguru import logger
 
 from .dispatch import dispatch
 from .schema import Call, CallStatus, Endpoint, EndpointCreate
 from .state import State, get_state
 
+http_basic = HTTPBasic(auto_error=False)
 
-async def verify_auth_key(req: Request, auth: Optional[str] = Query(None)):
-    if req.app.config.auth_key is not None and req.app.config.auth_key != auth:
-        raise HTTPException(status_code=400, detail="Invalid auth key")
+
+async def verify_auth(
+    basic_credentials: HTTPBasicCredentials = Depends(http_basic),
+    token: Optional[str] = Query(None),
+    state: State = Depends(get_state),
+):
+    if state.config.credentials is None or len(state.config.credentials) == 0:
+        return
+
+    username_in = None
+    password_in = None
+
+    if basic_credentials is not None:
+        username_in = basic_credentials.username
+        password_in = basic_credentials.password
+
+    if token is not None:
+        token_credentials = token.split(":", maxsplit=1)
+        if len(token_credentials) == 2:
+            username_in = token_credentials[0]
+            password_in = token_credentials[1]
+
+    if (
+        not (username_in is None or password_in is None)
+        and username_in in state.config.credentials
+        and secrets.compare_digest(
+            password_in, state.config.credentials.get(username_in)
+        )
+    ):
+        return
+
+    raise HTTPException(
+        status_code=401,
+        detail="Incorrect credentials",
+        headers={"WWW-Authenticate": "Basic"},
+    )
 
 
 router = APIRouter(
     prefix="/api",
-    dependencies=[Depends(verify_auth_key)],
+    dependencies=[Depends(verify_auth)],
 )
 
 

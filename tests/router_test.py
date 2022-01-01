@@ -1,11 +1,37 @@
-def test_auth_key(client_secure):
-    response = client_secure.get("/api/?auth=secret")
+from fastapi.testclient import TestClient
+
+
+def test_auth(client_secure: TestClient):
+    response = client_secure.get("/api/?token=test:pass")
+    assert response.status_code == 200
+
+    response = client_secure.get("/api/", auth=("test", "pass"))
+    assert response.status_code == 200
+
+    response = client_secure.get("/api/?token=test:pass", auth=("test", "pass"))
     assert response.status_code == 200
 
 
-def test_auth_key_fail(client_secure):
-    response = client_secure.get("/api/?auth=not-secret")
-    assert response.status_code == 400
+def test_auth_key_fail(client_secure: TestClient):
+    response = client_secure.get("/api/?token=pirate:pass")
+    assert response.status_code == 401
+
+    response = client_secure.get("/api/", auth=("pirate", "pass"))
+    assert response.status_code == 401
+
+    response = client_secure.get("/api/?token=pirate:pass", auth=("pirate", "pass"))
+    assert response.status_code == 401
+
+
+def test_auth_key_invalid(client_secure: TestClient):
+    response = client_secure.get("/api/?token=pirate::pass")
+    assert response.status_code == 401
+
+    response = client_secure.get("/api/", auth=("pirate:", "pass"))
+    assert response.status_code == 401
+
+    response = client_secure.get("/api/?token=pirate::pass:", auth=("pirate", "pass"))
+    assert response.status_code == 401
 
 
 def test_create_endpoint(client):

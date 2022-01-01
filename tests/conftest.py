@@ -21,7 +21,7 @@ def fixture_app(config):
 
 @pytest.fixture(name="app_secure")
 def fixture_app_secure(config):
-    config.auth_key = "secret"
+    config.credentials = {"test": "pass"}
     yield create_app(config)
 
 
