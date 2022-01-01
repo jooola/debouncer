@@ -12,9 +12,13 @@ static_path = Path(__file__).parent.parent / "web/dist"
 
 
 def create_app(config: Config):
-    app = FastAPI()
-    app.config = config  # type: ignore
-    app.store = get_store(config.store_path)  # type: ignore
+    app = FastAPI(
+        title="Debouncer",
+        description="A proxy that debounce requests.",
+        version="0.1.0",
+    )
+    app.state.config = config
+    app.state.store = get_store(config.store_path)
 
     app.include_router(router)
     app.mount("/assets", StaticFiles(directory=static_path / "assets"), name="assets")
@@ -25,6 +29,6 @@ def create_app(config: Config):
 
     @app.on_event("shutdown")
     async def shutdown():
-        app.store.close()
+        app.state.store.close()
 
     return app

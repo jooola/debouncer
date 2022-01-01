@@ -14,6 +14,7 @@ from loguru import logger
 
 from .dispatch import dispatch
 from .schema import Call, CallStatus, Endpoint, EndpointCreate
+from .state import State, get_state
 
 
 async def verify_auth_key(req: Request, auth: Optional[str] = Query(None)):
@@ -28,49 +29,49 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[Endpoint], tags=["endpoints"])
-async def get_endpoints(req: Request):
-    return req.app.store.all()
+async def get_endpoints(state: State = Depends(get_state)):
+    return state.store.all()
 
 
 @router.post("/", response_model=Endpoint, status_code=201, tags=["endpoints"])
 async def create_endpoint(
-    req: Request,
     body: EndpointCreate = Body(...),
+    state: State = Depends(get_state),
 ):
     endpoint = Endpoint.from_create(body)
-    req.app.store.save(endpoint.uid, endpoint)
+    state.store.save(endpoint.uid, endpoint)
     return endpoint
 
 
 async def endpoint_ctx(
-    req: Request,
     uid: UUID,
+    state: State = Depends(get_state),
 ):
-    if uid not in req.app.store:
+    if uid not in state.store:
         raise HTTPException(status_code=404, detail="Endpoint not found")
-    return req.app.store.get(uid)
+    return state.store.get(uid)
 
 
 @router.delete("/{uid}", tags=["endpoints"])
 async def delete_endpoint(
-    req: Request,
     endpoint: Endpoint = Depends(endpoint_ctx),
+    state: State = Depends(get_state),
 ):
-    req.app.store.delete(endpoint.uid)
+    state.store.delete(endpoint.uid)
     return
 
 
 @router.post("/{uid}", response_model=Call, tags=["calls"])
 async def create_call(
-    req: Request,
     worker: BackgroundTasks,
     endpoint: Endpoint = Depends(endpoint_ctx),
+    state: State = Depends(get_state),
 ):
     if endpoint.call is None:
         logger.debug(f"{endpoint.uid}: creating new call")
         endpoint.call = Call()
-        req.app.store.save(endpoint.uid, endpoint)
-        worker.add_task(dispatch, req.app.store, endpoint)
+        state.store.save(endpoint.uid, endpoint)
+        worker.add_task(dispatch, state.store, endpoint)
 
     # Initial request not yet dispatched, ignoring
     # if endpoint.call.status == CallStatus.CREATED:
@@ -83,31 +84,31 @@ async def create_call(
     if endpoint.call.status == CallStatus.LOCKED:
         logger.debug(f"{endpoint.uid}: call is locked, it should be redispatched")
         endpoint.call.redispatch = True
-        req.app.store.save(endpoint.uid, endpoint)
+        state.store.save(endpoint.uid, endpoint)
 
     return endpoint.call
 
 
 @router.post("/{uid}/lock", tags=["calls"])
 async def lock_call(
-    req: Request,
     endpoint: Endpoint = Depends(endpoint_ctx),
+    state: State = Depends(get_state),
 ):
     if endpoint.call is None:
         raise HTTPException(status_code=404, detail="Call not found")
 
     logger.debug(f"{endpoint.uid}: locking call")
     endpoint.call.status = CallStatus.LOCKED
-    req.app.store.save(endpoint.uid, endpoint)
+    state.store.save(endpoint.uid, endpoint)
     return endpoint.call
 
 
 @router.post("/{uid}/close", tags=["calls"])
 async def close_call(
-    req: Request,
     endpoint: Endpoint = Depends(endpoint_ctx),
+    state: State = Depends(get_state),
 ):
     logger.debug(f"{endpoint.uid}: closing call")
     endpoint.call = None
-    req.app.store.save(endpoint.uid, endpoint)
+    state.store.save(endpoint.uid, endpoint)
     return endpoint.call
