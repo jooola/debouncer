@@ -1,11 +1,11 @@
 from fastapi import Request
-from pydantic import BaseModel
 
 from .config import Config
 from .store import Store
 
 
-class State(BaseModel):
+# pylint: disable=too-few-public-methods
+class State:
     config: Config
     store: Store
 

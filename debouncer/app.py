@@ -6,7 +6,6 @@ from starlette.responses import FileResponse
 
 from .config import Config
 from .router import router
-from .state import State
 from .store import get_store
 
 static_path = Path(__file__).parent.parent / "web/dist"
@@ -19,10 +18,8 @@ def create_app(config: Config):
         version="0.1.0",
     )
 
-    app.state = State(
-        config=config,
-        store=get_store(config.store_path),
-    )
+    app.state.config = config
+    app.state.store = get_store(config.store_path)
 
     app.include_router(router)
     app.mount("/assets", StaticFiles(directory=static_path / "assets"), name="assets")
