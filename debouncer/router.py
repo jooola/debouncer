@@ -34,14 +34,10 @@ async def verify_auth(
             username_in = token_credentials[0]
             password_in = token_credentials[1]
 
-    if (
-        not (username_in is None or password_in is None)
-        and username_in in state.config.credentials
-        and secrets.compare_digest(
-            password_in, state.config.credentials.get(username_in)
-        )
-    ):
-        return
+    if not (username_in is None or password_in is None):
+        password = state.config.credentials.get(username_in)
+        if password is not None and secrets.compare_digest(password_in, password):
+            return
 
     raise HTTPException(
         status_code=401,
