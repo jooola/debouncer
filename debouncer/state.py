@@ -1,10 +1,11 @@
 from fastapi import Request
+from pydantic import BaseModel
 
 from .config import Config
 from .store import Store
 
 
-class State:
+class State(BaseModel):
     config: Config
     store: Store
 
