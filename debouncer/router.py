@@ -2,15 +2,7 @@ import secrets
 from typing import List, Optional
 from uuid import UUID
 
-from fastapi import (
-    APIRouter,
-    BackgroundTasks,
-    Body,
-    Depends,
-    HTTPException,
-    Query,
-    Request,
-)
+from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, Query
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from loguru import logger
 
