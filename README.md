@@ -13,8 +13,8 @@ To configure `Debouncer`, you can set the following environment variables:
 STORE_PATH=your-app.db
 # Port for the http server, default is "4000"
 PORT=8000
-# Auth key for a key based auth, default is not set
-AUTH_KEY=your-secret-auth-key
+# Credentials for a basic auth or token based authentication, default is not set
+CREDENTIALS={"username": "password"}
 ```
 
 # Release
