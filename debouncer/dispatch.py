@@ -29,14 +29,20 @@ async def dispatch(store: Store, endpoint: Endpoint):
         logger.info(f"{endpoint.uid}: waiting {endpoint.timeout} seconds timeout")
         await asyncio.sleep(endpoint.timeout)
 
-    # Delete call or redispatch
+    # Close call or redispatch
     endpoint = store.get(endpoint.uid)
+    await close_call_or_redispatch(store, endpoint)
+
+
+async def close_call_or_redispatch(store: Store, endpoint: Endpoint) -> Endpoint:
     if endpoint.call is not None and endpoint.call.redispatch:
         logger.info(f"{endpoint.uid}: redispatching call")
         endpoint.call.redispatch = False
         store.save(endpoint.uid, endpoint)
         await dispatch(store, endpoint)
     else:
-        logger.info(f"{endpoint.uid}: removing call")
+        logger.info(f"{endpoint.uid}: closing call")
         endpoint.call = None
         store.save(endpoint.uid, endpoint)
+
+    return endpoint

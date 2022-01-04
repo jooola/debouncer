@@ -6,7 +6,7 @@ from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, Qu
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from loguru import logger
 
-from .dispatch import dispatch
+from .dispatch import close_call_or_redispatch, dispatch
 from .schema import Call, CallStatus, Endpoint, EndpointCreate
 from .state import State, get_state
 
@@ -132,7 +132,5 @@ async def close_call(
     endpoint: Endpoint = Depends(endpoint_ctx),
     state: State = Depends(get_state),
 ):
-    logger.debug(f"{endpoint.uid}: closing call")
-    endpoint.call = None
-    state.store.save(endpoint.uid, endpoint)
+    endpoint = await close_call_or_redispatch(state.store, endpoint)
     return endpoint.call
