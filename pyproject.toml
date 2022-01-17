@@ -32,7 +32,7 @@ pylint = "^2.12.2"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 pytest-asyncio = "^0.16.0"
-pytest-httpx = "^0.17.3"
+pytest-httpx = "^0.18.0"
 pytest-xdist = "^2.5.0"
 requests = "^2.27.1"
 

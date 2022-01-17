@@ -486,7 +486,7 @@ pytest = ">=3.10"
 
 [[package]]
 name = "pytest-httpx"
-version = "0.17.3"
+version = "0.18.0"
 description = "Send responses to httpx."
 category = "dev"
 optional = false
@@ -676,7 +676,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0"
-content-hash = "0200259956eeb90a2a3d0b4a18964aad6c6fc91db55a87b250b28f6f0370c2b0"
+content-hash = "3a208135bd7b4770b1e5845379f2f723bc184f8e527a5b78115d55ead7a6e8c5"
 
 [metadata.files]
 anyio = [
@@ -959,8 +959,8 @@ pytest-forked = [
     {file = "pytest_forked-1.4.0-py3-none-any.whl", hash = "sha256:bbbb6717efc886b9d64537b41fb1497cfaf3c9601276be8da2cccfea5a3c8ad8"},
 ]
 pytest-httpx = [
-    {file = "pytest_httpx-0.17.3-py3-none-any.whl", hash = "sha256:3c1db0d850ed92450aa7424467d1163776b0dc39c902d57450a9cb4a8847355c"},
-    {file = "pytest_httpx-0.17.3.tar.gz", hash = "sha256:49c3e6d4e702ce817a51826c0e95a538b8eccefb9feebc6cff6ddd099fc10946"},
+    {file = "pytest_httpx-0.18.0-py3-none-any.whl", hash = "sha256:f09d8b0013b0e44fd01fc38e31bf89f561d4a5aff33172c1234fd3063bb4dbaa"},
+    {file = "pytest_httpx-0.18.0.tar.gz", hash = "sha256:d9a754c5d5200cc74a6c9d41d0584caf33414812b0ee4256f5be0e0226fd2826"},
 ]
 pytest-xdist = [
     {file = "pytest-xdist-2.5.0.tar.gz", hash = "sha256:4580deca3ff04ddb2ac53eba39d76cb5dd5edeac050cb6fbc768b0dd712b4edf"},
