@@ -556,7 +556,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "sqlitedict"
-version = "1.7.0"
+version = "2.0.0"
 description = "Persistent dict in Python, backed up by sqlite3 and pickle, multithread-safe."
 category = "main"
 optional = false
@@ -673,7 +673,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0"
-content-hash = "b4da6d4dcf9082eff3f92efaf64987e82c81e0157424d3c17ac537d33f4b85ad"
+content-hash = "a2e847cb8edf9035ee7b60ac860c44bb9a9de6459c02bc983177984ffc8ca093"
 
 [metadata.files]
 anyio = [
@@ -991,7 +991,7 @@ sniffio = [
     {file = "sniffio-1.2.0.tar.gz", hash = "sha256:c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de"},
 ]
 sqlitedict = [
-    {file = "sqlitedict-1.7.0.tar.gz", hash = "sha256:2affcc301aacd4da7511692601ecbde392294205af418498f7d6d3ec0dbcad56"},
+    {file = "sqlitedict-2.0.0.tar.gz", hash = "sha256:23a370416f4e1e962daa293382f3a8dbc4127e6a0abc06a5d4e58e6902f05d17"},
 ]
 starlette = [
     {file = "starlette-0.17.1-py3-none-any.whl", hash = "sha256:26a18cbda5e6b651c964c12c88b36d9898481cd428ed6e063f5f29c418f73050"},
