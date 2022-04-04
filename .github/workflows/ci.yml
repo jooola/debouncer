@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3.0.1
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock') }}
@@ -51,7 +51,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3.0.1
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock') }}
@@ -78,7 +78,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3.0.1
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock') }}
